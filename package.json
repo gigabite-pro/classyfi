@@ -1,0 +1,33 @@
+{
+  "name": "classyfi",
+  "version": "1.0.0",
+  "description": "Study rooms finding app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gigabite-pro/classyfi.git"
+  },
+  "author": "Vaibhav Sharma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gigabite-pro/classyfi/issues"
+  },
+  "homepage": "https://github.com/gigabite-pro/classyfi#readme",
+  "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.3.26",
+    "axios": "^1.2.3",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^6.8.4",
+    "qs": "^6.11.0",
+    "url-parse": "^1.5.10"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}

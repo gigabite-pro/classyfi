@@ -1,0 +1,154 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <!-- Maps API  -->
+    <script src="https://apis.mapmyindia.com/advancedmaps/v1/38516908d26c816fc49c7fd683c45e76/map_load?v=1.5"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <title>Classyfi | StudyGroups</title>
+</head>
+<script>
+    var map = null;
+    var marker = [];
+    let groups = [];
+    let currentPosition = [];
+    let currentMarkerLocation = [];
+
+    function getUsers() {
+        fetch('/groups/all', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(async (res) => {
+            const resp = await res.json()
+            groups = resp.groups;
+            console.log(resp);
+            navigator.geolocation.getCurrentPosition(showPosition);
+        })
+    }
+    function showPosition(position) {
+        currentPosition = [position.coords.latitude, position.coords.longitude];
+        console.log(currentPosition);
+        map = new MapmyIndia.Map('map', {
+            center: currentPosition,
+            zoomControl: true,
+            hybrid: true
+        });
+    
+        function mapmyindia_fit_markers_into_bound(position) {
+            var maxlat = position.lat;
+            var maxlon = position.lng;
+            var minlat = position.lat;
+            var minlon = position.lng;
+            var southWest = L.latLng(maxlat, maxlon);
+            var northEast = L.latLng(minlat, minlon);
+            var bounds = L.latLngBounds(southWest, northEast);
+            map.fitBounds(bounds);
+        }
+    
+        function addMarker(position, icon, title, draggable, name) {
+            if (icon == '') {
+                var mk = new L.Marker(position, {
+                    draggable: draggable,
+                    title: name
+                });
+            } else {
+                var mk = new L.Marker(position, {
+                    icon: icon,
+                    draggable: draggable,
+                    title: name
+                });
+            }
+            map.addLayer(mk);
+            mk.on("click", async function(e) {
+                mapmyindia_fit_markers_into_bound(position);
+                currentMarkerLocation = [position.lat, position.lng];
+                // window.open(`/admin/employee/${title}`)
+            });
+            return mk;
+        }
+    
+    
+        function loadAllGroups() {
+            var icon = L.icon({
+                iconUrl: '/assets/map-icon.svg',
+                iconRetinaUrl: '/assets/map-icon.svg',
+                iconSize: [25, 25],
+                popupAnchor: [-3, -15]
+            });
+            for (let i = 0; i < groups.length; i++) {
+                var position = new L.LatLng(groups[i].latLong[0], groups[i].latLong[1]);
+                console.log(position)
+                marker.push(addMarker(position, icon, groups[i]._id, false, groups[i].name));
+            }
+        }
+        // markCurrentLocation();
+        loadAllGroups();
+    }
+    getUsers()
+</script>
+<body>
+    <div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="roomModalLabel">Create Room</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/groups/create" method="post">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="groupName" placeholder="Room Name" autocomplete="off">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="groupDescription" placeholder="Room description" autocomplete="off">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="address" placeholder="Room Address" autocomplete="off">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="innerLocation" placeholder="Location Inside Building" autocomplete="off">
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn">Create</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="map-container">
+        <div class="left">
+            <div class="create-group">
+                <button data-bs-toggle="modal" data-bs-target="#roomModal">Create Group</button>
+            </div>
+            <div class="search">
+                <input type="text" id="searchbar" placeholder="Search Groups" >
+            </div>
+            <div class="groups">
+                <% groups.forEach(group => { %>
+                    <div class="group">
+                        <div class="name">
+                            <%= group.groupName %>
+                        </div>
+                        <div class="description">
+                            <%= group.groupDescription %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>           
+        </div>
+        <div id="map">
+
+        </div>
+    </div>
+    <!-- Bootstrap  -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>
