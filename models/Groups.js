@@ -7,15 +7,23 @@ const groupSchema = new mongoose.Schema({
     },
     groupDescription: {
         type: String,
+        required: true,
     },
     latLong : {
         type: Array,
+        required: true,
     },
     exactLocation: {
         type: String,
+        required: true,
     },
     members: {
-        type: Number,
+        type: Array,
+        required: true,
+    },
+    groupCode: {
+        type: String,
+        required: true,
     },
     date: {
         type: Date,

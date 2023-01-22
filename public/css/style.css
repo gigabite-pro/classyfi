@@ -49,11 +49,17 @@ nav ul{
 }
 
 nav a{
-    padding: 0.6vw 2vw;
+    padding: 0.6vw 1vw;
     text-decoration: none;
     list-style: none;
     color: white;
     font-weight: 600;
+}
+
+a:hover{
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
 }
 
 nav .login{
@@ -61,6 +67,7 @@ nav .login{
     color: black;
     border-radius: 0.5vw;
     padding: 0.6vw 1vw;
+    margin-left: 1vw;
 }
 
 .main{
@@ -79,6 +86,8 @@ nav .login{
     color: black;
     font-size: 7vw;
     font-weight: bold;
+    margin-bottom: 0.5vw;
+    margin-top: -1vw;
 }
 
 .illus{
@@ -116,16 +125,16 @@ nav .login{
     align-items: center;
 }
 
-.create-group button{
+
+.btn-design{
     padding: 0.6vw;
     background-color: #006989;
     color: white;
     border: none;
     border-radius: 3px;
-    margin-left: 1vw;
 }
 
-.create-group button:hover{
+.btn-design:hover{
     background-color: #004d6b;
     cursor: pointer;
 }
@@ -195,18 +204,6 @@ nav .login{
     border-radius: 3px;
 }
 
-form .btn{
-    background-color: #006989;
-    color: white;
-    border: none;
-    border-radius: 3px;
-}
-
-form .btn:hover{
-    background-color: #004d6b;
-    cursor: pointer;
-}
-
 #backdrop{
     width: 100vw;
     height: 100vh;
@@ -267,4 +264,98 @@ form .btn:hover{
 .info-btn:hover{
     background-color: #004d6b;
     cursor: pointer;
+}
+
+.profile{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 6vw;
+}
+
+.info-box{
+    width: 30vw;
+    height: 15vw;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+}
+
+.info-box .left{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 1.3vw;
+}
+
+.info-box .pfp{
+    height: 8vw;
+    width: 8vw;
+    border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.info-box .username{
+    text-align: center;
+}
+
+.info-box .right{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 1.5vw;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 20vw;
+    margin-top: 1vw;
+}
+
+table{
+    text-align: center;
+    margin-top: 4vh;
+    width: 64vw;
+    height: 10vh;
+    border-collapse: collapse;
+    font-size: 1.2vw;
+    font-weight: 500;
+}
+
+table thead tr{
+    background-color: #004d6b;
+    text-align: center;
+    color: white;
+}
+
+td,th{
+    padding: 0.5vw;
+}
+
+tr:nth-child(even){
+    background-color: #81898d;
+}
+
+.profile-group-info{
+    display: flex;
+    margin-top: 1vw;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 30vw;
+    background-color: white;
+    border-radius: 5px;
+    padding: 0.3vw;
+}
+
+.profile-group-info form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
 }

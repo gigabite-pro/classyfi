@@ -25,6 +25,7 @@
     "express-session": "^1.17.3",
     "mongoose": "^6.8.4",
     "qs": "^6.11.0",
+    "shortid": "^2.2.16",
     "url-parse": "^1.5.10"
   },
   "devDependencies": {

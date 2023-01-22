@@ -1,0 +1,209 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://kit.fontawesome.com/410f94a1ed.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css3?family=Lexend+Deca&display=swap" rel="stylesheet">
+    <title>Classyfi | Profile</title>
+</head>
+<body>
+    <nav>
+        <a href="/">
+            <div class="logo"></div>
+        </a>
+        <ul>
+            <a href="/map">
+                <li>
+                    Map
+                </li>
+            </a>
+            <a href="/profile">
+                <li>Profile</li>
+            </a>
+            <a href="/auth/logout" class="login">
+                <li>Logout</li>
+            </a>
+        </ul>
+    </nav>
+
+    <div class="modal fade" id="groupModal" tabindex="-1" aria-labelledby="groupModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="groupModalLabel">Create Group</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/groups/create" method="post">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="groupName" placeholder="Room Name" autocomplete="off" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="groupDescription" placeholder="Room description" autocomplete="off" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="address" placeholder="Address of the location" autocomplete="off" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="exactLocation" placeholder="Exact Location" autocomplete="off" required>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn-design">Create</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="joinModal" tabindex="-1" aria-labelledby="joinModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="joinModalLabel">Join Group</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/groups/join" method="post">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="groupCode" placeholder="Enter Group Code" autocomplete="off" required>
+                </div>
+                <div class="mb-3">
+                    <button type="button" onclick="checkGroupCode()" class="btn-design">Join</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="profile">
+        <div class="info-box">
+            <div class="left">
+                <div class="pfp" style="background-image: url(<%=user.pfp%>);"></div>
+                <div class="username">
+                    <strong>
+                        <%=user.username%>
+                    </strong>
+                </div>
+            </div>
+            <hr style="transform: rotate(90); margin: 0; padding: 0; color: black; background-color: black; width: 0.2w; opacity: 1; height: 100%;">
+            <div class="right">
+                <span>
+                    <strong>Name: </strong><br><%= user.name %>
+                </span>
+                <span>
+                    <strong>Email: </strong><br><%= user.email %>
+                </span>
+                <span>
+                    <strong>Points: </strong><br><%= user.points %>
+                </span>
+            </div>
+        </div>
+
+        <% if (user.status == "") { %>
+            <div class="buttons">
+                <button class="btn-design" data-bs-toggle="modal" data-bs-target="#groupModal">
+                    Create Group
+                </button>
+    
+                <button class="btn-design" data-bs-toggle="modal" data-bs-target="#joinModal">
+                    Join Group
+                </button>
+            </div>
+        <% }else if(user.status == "admin") { %>
+            <div class="profile-group-info">
+                <div class="name">
+                    <strong>
+                        <%= user.currentGroup.groupName %>
+                    </strong>
+                </div>
+                <div class="code">
+                        <%= user.currentGroup.groupCode %>
+                </div>
+                <div class="delete">
+                    <form action="/groups/delete" method="post">
+                        <input type="hidden" name="groupCode" value="<%= user.currentGroup.groupCode %>">
+                        <button type="submit" class="btn-design" style="background-color: red;">Delete</button>
+                    </form>
+                </div>
+            </div>
+            <% }else { %>
+                <div class="profile-group-info">
+                    <div class="name">
+                        <strong>
+                            <%= user.currentGroup.groupName %>
+                        </strong>
+                    </div>
+                    <div class="code">
+                            <%= user.currentGroup.groupCode %>
+                    </div>
+                    <div class="delete">
+                        <form action="/groups/leave" method="post">
+                            <input type="hidden" name="groupCode" value="<%= user.currentGroup.groupCode %>">
+                            <button type="submit" class="btn-design" style="background-color: red;">Leave</button>
+                        </form>
+                    </div>
+                </div>
+                <% } %>
+        
+
+        <div class="leaderboard">
+            <table>
+                <thead>
+                    <tr>
+                      <th colspan="1" class="text-center">#</th>
+                      <th colspan="2" class="text-center">Name</th>
+                      <th colspan="1" class="text-center">Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i < users.length; i++) { %>
+                        <tr>
+                            <th class="text-center"><%= i+1 %></th>
+                            <td colspan="2" class="text-center"><%= users[i].name %></td>
+                            <td class="text-center"><%= users[i].points %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function checkGroupCode() {
+            var groupCode = document.querySelector("input[name='groupCode']").value;
+            fetch(`/groups/check?code=${groupCode}`, {method: "GET"})
+            .then(res => res.json())
+            .then(res => {
+                if(res.status == "success") {
+                    document.querySelector("form[action='/groups/join']").submit();
+                }else {
+                    Toastify({
+                        text: `Invalid Code`,
+                        duration: 4000,
+                        destination: "https://github.com/apvarun/toastify-js",
+                        newWindow: true,
+                        close: false,
+                        gravity: "top", // `top` or `bottom`
+                        position: "center", // `left`, `center` or `right`
+                        stopOnFocus: false, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "#dc3545",
+                        }
+                        }).showToast();
+                }
+            })
+            .catch(err => console.log(err))
+        }
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+     <!-- Bootstrap  -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>

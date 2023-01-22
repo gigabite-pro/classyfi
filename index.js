@@ -5,6 +5,7 @@ const session = require('express-session');
 const authRoute = require('./routes/auth');
 const groupsRoute = require('./routes/groups');
 const Groups = require('./models/Groups');
+const Users = require('./models/Users');
 require('dotenv').config();
 
 app.use(express.static(__dirname + '/public'));
@@ -40,12 +41,23 @@ app.get('/', (req, res)=>{
     res.render('index');
 })
 
-app.get('/dashboard', (req, res)=>{
+app.get('/map', (req, res)=>{
     Groups.find({})
     .then((groups) => {
-        res.render('dashboard', {groups});
+        res.render('map', {groups});
     })
     .catch(err => console.log(err))
+})
+
+app.get('/profile', (req,res) =>{
+    Users.find({}).sort({points: 'desc'}).limit(50)
+    .then(users => {
+        Users.findById(req.session.user._id)
+        .then(user => {
+            res.render('profile', {user, users});
+        })
+        .catch(err => console.log(err))
+    }).catch(err => console.log(err))
 })
 
 const PORT = process.env.PORT || 3000; // || = OR, && = AND

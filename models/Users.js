@@ -12,12 +12,20 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    currentRoom: {
-        type: String,
-    },
     pfp: {
         type: String,
         required: true,
+    },
+    currentGroup: {
+        type: Object,
+    },
+    points: {
+        type: Number,
+        default: 0,
+    },
+    status: {
+        type: String,
+        default: "",
     },
     date: {
         type: Date,

@@ -2,6 +2,9 @@ const router = require('express').Router();
 const {isAuthorized} = require('../config/authCheck');
 const {Client} = require("@googlemaps/google-maps-services-js");
 const Groups = require('../models/Groups');
+const shortid = require('shortid');
+const Users = require('../models/Users');
+const req = require('express/lib/request');
 require('dotenv').config()
 
 const client = new Client({});
@@ -30,14 +33,119 @@ router.post('/create', (req, res) => {
             groupDescription,
             latLong: latLng,
             exactLocation,
-            members: 1,
+            members: [req.session.user._id],
+            groupCode: shortid.generate(),
         })
         newGroup.save()
         .then((group) => {
-            res.redirect('/dashboard');
+            Users.findById(req.session.user._id)
+            .then(user => {
+                user.currentGroup = {
+                    groupName: group.groupName,
+                    groupCode: group.groupCode,
+                };
+                user.status = 'admin'
+                user.save()
+                .then(() => {
+                    res.redirect('/profile');
+                })
+            })
+            .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
     }).catch(err => console.log(err))
+})
+
+router.get('/check', (req, res) => {
+    const code = req.query.code;
+    Groups.findOne({groupCode: code})
+    .then(group => {
+        if(group){
+            res.json({
+                status: "success",
+            });
+        } else {
+            res.json({
+                status: "failed",
+            });
+        }
+    })
+    .catch(err => console.log(err))
+})
+
+router.post('/join', (req, res) => {
+    const {groupCode} = req.body;
+    Groups.findOne({groupCode: groupCode})
+    .then((group) => {
+        if(group){
+            members = group.members;
+            members.push(req.session.user._id);
+            group.markModified('members');
+            group.save()
+            .then(() => {
+                Users.findById(req.session.user._id)
+                .then(user => {
+                    user.currentGroup = {
+                        groupName: group.groupName,
+                        groupCode: group.groupCode,
+                    };
+                    user.status = 'member'
+                    user.save()
+                    .then(() => {
+                        res.redirect('/profile');
+                    })
+                })
+                .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err))
+        }
+    })
+    .catch(err => console.log(err))
+})
+
+router.post('/delete', (req, res) => {
+    const {groupCode} = req.body;
+    Groups.findOneAndDelete({groupCode : groupCode})
+    .then(doc => {
+        Users.find({_id: doc.members})
+        .then(users => {
+            users.forEach(user => {
+                user.currentGroup = {};
+                user.status = '';
+                user.save()
+                .then(() => {
+                    res.redirect('/profile');
+                })
+                .catch(err => console.log(err))
+            })
+        })
+        .catch(err => console.log(err))
+    })
+    .catch(err => console.log(err))
+})
+
+router.post('/leave', (req, res) => {
+    const {groupCode} = req.body;
+    Groups.findOne({groupCode: groupCode})
+    .then(group => {
+        members = group.members;
+        group.members = members.filter(member => member != req.session.user._id);
+        group.markModified('members');
+        group.save()
+        .then(() => {
+            Users.findById(req.session.user._id)
+            .then(user => {
+                user.currentGroup = {};
+                user.status = '';
+                user.save()
+                .then(() => {
+                    res.redirect('/profile');
+                })
+            })
+            .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+    })
 })
 
 module.exports = router;
