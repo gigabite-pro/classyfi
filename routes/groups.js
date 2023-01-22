@@ -23,7 +23,6 @@ router.post('/create', (req, res) => {
             key: process.env.GOOGLE_MAPS_API_KEY
         }
     }).then(resp => {
-        console.log(resp.data.results[0].geometry.location);
         const latLng = [resp.data.results[0].geometry.location.lat, resp.data.results[0].geometry.location.lng];
 
         const newGroup = new Groups({
