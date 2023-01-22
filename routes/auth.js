@@ -2,7 +2,6 @@ const router = require('express').Router();
 const axios = require('axios');
 const qs = require('qs');
 const Users = require('../models/Users');
-const {isAuthorized} = require('../config/authCheck');
 require('dotenv').config()
 
 const redirectUri = process.env.REDIRECT_URI
