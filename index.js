@@ -47,7 +47,7 @@ app.get('/', (req, res)=>{
 })
 
 app.get('/map', isAuthorized, (req, res)=>{
-    Groups.find({})
+    Groups.find({}).sort({members: 'desc'})
     .then((groups) => {
         res.render('map', {groups});
     })
