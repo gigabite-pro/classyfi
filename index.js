@@ -39,7 +39,11 @@ app.use('/auth', authRoute);
 app.use('/groups', groupsRoute);
 
 app.get('/', (req, res)=>{
-    res.render('index');
+    if(req.session.user){
+        res.redirect('/map')
+    }else{
+        res.render('index');
+    }
 })
 
 app.get('/map', isAuthorized, (req, res)=>{

@@ -4,38 +4,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css3?family=Lexend+Deca&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/map-icon.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <title>Classyfi | Home</title>
 </head>
 <body>
-    <nav>
-        <a href="/">
-            <div class="logo"></div>
-        </a>
-        <ul>
-            <a href="/">
-                <li>Home</li>
-            </a>
-            <a href="/auth/login" class="login">
-                <li>Login</li>
-            </a>
-        </ul>
-    </nav>
-
+    <div id="particles-js"></div>
     <div class="main">
+        <div class="illus"></div>
         <div class="heading">
             <h1>
-                Classyfi
+                classyfi
             </h1>
             <h2>
-                Your go-to place to find study groups.
+                go-to place to find study groups.
             </h2>
-        </div>
-
-        <div class="illus">
-
+            <a href="/auth/login">
+                <button class="btn-design" style="margin-top: -1vw; padding: 0.4vw 1.2vw;">
+                    Get Started
+                </button>
+            </a>
         </div>
     </div>
+    <script src="/js/particles.js"></script>
+    <script>
+        particlesJS.load('particles-js', '/js/particles.json', function() {
+            console.log('callback - particles.js config loaded');
+        });
+    </script>
 </body>
 </html>

@@ -7,30 +7,31 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
     <script src="https://kit.fontawesome.com/410f94a1ed.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css3?family=Lexend+Deca&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/map-icon.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <title>Classyfi | Profile</title>
 </head>
 <body>
+    
     <nav>
-        <a href="/">
-            <div class="logo"></div>
-        </a>
         <ul>
             <a href="/map">
-                <li>
+                <button class="btn-design">
                     Map
-                </li>
+                </button>
             </a>
-            <a href="/profile">
-                <li>Profile</li>
-            </a>
-            <a href="/auth/logout" class="login">
-                <li>Logout</li>
+            <a href="/auth/logout">
+                <button class="btn-design">
+                    Logout
+                </button>
             </a>
         </ul>
     </nav>
+
+    <hr style="margin: 0px">
 
     <div class="modal fade" id="groupModal" tabindex="-1" aria-labelledby="groupModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -86,58 +87,46 @@
         </div>
       </div>
 
-    <div class="profile">
-        <div class="info-box">
-            <div class="left">
-                <div class="pfp" style="background-image: url(<%=user.pfp%>);"></div>
-                <div class="username">
-                    <strong>
-                        <%=user.username%>
-                    </strong>
-                </div>
-            </div>
-            <hr style="transform: rotate(90); margin: 0; padding: 0; color: black; background-color: black; width: 0.2w; opacity: 1; height: 100%;">
-            <div class="right">
-                <span>
-                    <strong>Name: </strong><br><%= user.name %>
-                </span>
-                <span>
-                    <strong>Email: </strong><br><%= user.email %>
-                </span>
-                <span>
-                    <strong>Points: </strong><br><%= user.points %>
-                </span>
-            </div>
-        </div>
+    <div class="profile-head">
+        <h1>Profile</h1>
+    </div>
 
-        <% if (user.status == "") { %>
-            <div class="buttons">
-                <button class="btn-design" data-bs-toggle="modal" data-bs-target="#groupModal">
-                    Create Group
-                </button>
+    <div class="profile">
+        <div class="left-side">
+            <div class="info-box">
+                <div class="left">
+                    <div class="pfp" style="background-image: url(<%=user.pfp%>);"></div>
+                    <div class="username">
+                        <strong>
+                            <%=user.username%>
+                        </strong>
+                    </div>
+                </div>
+                <hr style="transform: rotate(90deg); margin: 0; color: black;">
+                <div class="right">
+                    <span>
+                        <strong>Name: </strong><br><%= user.name %>
+                    </span>
+                    <span>
+                        <strong>Email: </strong><br><%= user.email %>
+                    </span>
+                    <span>
+                        <strong>Points: </strong><br><%= user.points %>
+                    </span>
+                </div>
+            </div>
     
-                <button class="btn-design" data-bs-toggle="modal" data-bs-target="#joinModal">
-                    Join Group
-                </button>
-            </div>
-        <% }else if(user.status == "admin") { %>
-            <div class="profile-group-info">
-                <div class="name">
-                    <strong>
-                        <%= user.currentGroup.groupName %>
-                    </strong>
+            <% if (user.status == "") { %>
+                <div class="buttons">
+                    <button class="btn-design" data-bs-toggle="modal" data-bs-target="#groupModal">
+                        Create Group
+                    </button>
+        
+                    <button class="btn-design" data-bs-toggle="modal" data-bs-target="#joinModal">
+                        Join Group
+                    </button>
                 </div>
-                <div class="code">
-                        <%= user.currentGroup.groupCode %>
-                </div>
-                <div class="delete">
-                    <form action="/groups/delete" method="post">
-                        <input type="hidden" name="groupCode" value="<%= user.currentGroup.groupCode %>">
-                        <button type="submit" class="btn-design" style="background-color: red;">Delete</button>
-                    </form>
-                </div>
-            </div>
-            <% }else { %>
+            <% }else if(user.status == "admin") { %>
                 <div class="profile-group-info">
                     <div class="name">
                         <strong>
@@ -148,34 +137,52 @@
                             <%= user.currentGroup.groupCode %>
                     </div>
                     <div class="delete">
-                        <form action="/groups/leave" method="post">
+                        <form action="/groups/delete" method="post">
                             <input type="hidden" name="groupCode" value="<%= user.currentGroup.groupCode %>">
-                            <button type="submit" class="btn-design" style="background-color: red;">Leave</button>
+                            <button type="submit" class="btn-design" style="background-color: red;">Delete</button>
                         </form>
                     </div>
                 </div>
-                <% } %>
-        
-
-        <div class="leaderboard">
-            <table>
-                <thead>
-                    <tr>
-                      <th colspan="1" class="text-center">#</th>
-                      <th colspan="2" class="text-center">Name</th>
-                      <th colspan="1" class="text-center">Points</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for(var i=0; i < users.length; i++) { %>
-                        <tr>
-                            <th class="text-center"><%= i+1 %></th>
-                            <td colspan="2" class="text-center"><%= users[i].name %></td>
-                            <td class="text-center"><%= users[i].points %></td>
-                        </tr>
+                <% }else { %>
+                    <div class="profile-group-info">
+                        <div class="name">
+                            <strong>
+                                <%= user.currentGroup.groupName %>
+                            </strong>
+                        </div>
+                        <div class="code">
+                                <%= user.currentGroup.groupCode %>
+                        </div>
+                        <div class="delete">
+                            <form action="/groups/leave" method="post">
+                                <input type="hidden" name="groupCode" value="<%= user.currentGroup.groupCode %>">
+                                <button type="submit" class="btn-design" style="background-color: red;">Leave</button>
+                            </form>
+                        </div>
+                    </div>
                     <% } %>
-                </tbody>
-            </table>
+        </div>
+        <div class="right-side">
+            <div class="leaderboard">
+                <table>
+                    <thead>
+                        <tr>
+                          <th colspan="1" class="text-center">#</th>
+                          <th colspan="2" class="text-center">Name</th>
+                          <th colspan="1" class="text-center">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < users.length; i++) { %>
+                            <tr>
+                                <th class="text-center"><%= i+1 %></th>
+                                <td colspan="2" class="text-center"><%= users[i].name %></td>
+                                <td class="text-center"><%= users[i].points %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <script>

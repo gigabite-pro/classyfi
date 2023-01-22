@@ -6,7 +6,10 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/410f94a1ed.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="assets/map-icon.png" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <title>Classyfi | StudyGroups</title>
 </head>
 <script>
@@ -119,17 +122,18 @@
             <div class="groups">
                 <% groups.forEach(group => { %>
                     <div class="group">
-                        <div class="name">
-                            <%= group.groupName %>
-                        </div>
                         <div class="info">
-                            <div class="description">
-                                <%= group.groupDescription %>
+                            <div class="name">
+                                <%= group.groupName %>
                             </div>
+
                             <div class="members">
                                 <i class="fa-solid fa-users"></i>
                                 <%= group.members.length %>
                             </div>
+                        </div>
+                        <div class="description">
+                            <%= group.groupDescription %>
                         </div>
                         <div class="exactLocation" style="display: none;">
                             <%= group.exactLocation %>
@@ -186,13 +190,13 @@
                     console.log(group)
                     infoModal.innerHTML = 
                     `<div class="headers">
-                        <h3>${group.children[0].innerText}</h3>
+                        <h3>${group.children[0].children[0].innerText}</h3>
                         <i class="fa-solid fa-xmark close" onclick="close_info_modal()"></i>
                     </div>
-                    <p><strong>Description:</strong> ${group.children[1].children[0].innerText}</p>
+                    <p><strong>Description:</strong> ${group.children[1].innerText}</p>
                     <p><strong>Exact Location:</strong> ${group.children[2].innerText}</p>
                     <p><strong>Contact:</strong> ${group.children[5].innerText}</p>
-                    <p><strong>Members:</strong> ${group.children[1].children[1].innerText}</p>
+                    <p><strong>Members:</strong> ${group.children[0].children[1].innerText}</p>
                     <button class="btn-design" onClick="getDirections(${group.children[3].children[0].innerHTML},${group.children[3].children[1].innerHTML})">Get Directions</button>`
                 })
             });

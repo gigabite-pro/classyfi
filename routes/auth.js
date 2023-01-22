@@ -70,7 +70,7 @@ router.get('/callback', async (req, res)=>{
         if(doc){
             //login
             req.session.user = doc
-            res.redirect('/profile')
+            res.redirect('/map')
         }else{
             //register
             const newUser = new Users({
@@ -82,7 +82,7 @@ router.get('/callback', async (req, res)=>{
             newUser.save()
             .then((resp)=>{
                 req.session.user = resp
-                res.redirect('/profile')
+                res.redirect('/map')
             })
             .catch(err => console.log(err))
         }

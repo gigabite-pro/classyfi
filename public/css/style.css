@@ -3,8 +3,17 @@ body{
     margin: 0;
     height: 100vh;
     width: 100vw;
-    background-color: #A3BAC3;
-    font-family: 'Lexend Deca', sans-serif;
+    background-color: whitesmoke;
+    font-family: 'Poppins', sans-serif;
+}
+
+#particles-js{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 ::-webkit-scrollbar {
@@ -21,82 +30,48 @@ body{
     border-radius: 10px;
 }
 
-nav{
-    width: 100vw;
-    height: 4.5vw;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #006989;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-nav ul{
-    display: flex;
-    margin-right: 13vw;
-    margin-top: 1vw;
-}
-
-
-.logo{
-    width: 10vw;
-    height: 3.5vw;
-    margin-top: 1vw;
-    margin-left: 7vw;
-    background: url('/assets/logo.jpeg') no-repeat;
-}
-
-nav a{
-    padding: 0.6vw 1vw;
-    text-decoration: none;
-    list-style: none;
-    color: white;
-    font-weight: 600;
-}
-
-a:hover{
-    cursor: pointer;
-    text-decoration: none;
-    color: white;
-}
-
-nav .login{
-    background-color: #A3BAC3;
-    color: black;
-    border-radius: 0.5vw;
-    padding: 0.6vw 1vw;
-    margin-left: 1vw;
+a{
+    width: fit-content;
 }
 
 .main{
     display: flex;
-    justify-content: space-around;
-    padding-top: 6vw;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.illus{
+    height: 25vw;
+    width: 25vw;
+    background-image: url('/assets/reading.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-bottom: -6vw;
+    margin-top: -2vw;
 }
 
 .heading{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .heading h1{
     color: black;
     font-size: 7vw;
-    font-weight: bold;
+    font-weight: bolder;
     margin-bottom: 0.1vw;
-    margin-top: -1vw;
 }
 
-.illus{
-    height: 40vw;
-    width: 40vw;
-    padding-right: 5vw;
-    background: url('/assets/illus1.png') no-repeat;
-    background-position: center;
-    background-size: cover;
+.heading h2{
+    color: black;
+    font-weight: normal;
+    margin-top: -1vw;
 }
 
 .map-container{
@@ -106,15 +81,15 @@ nav .login{
 .map-container .left{
     padding-top: 1vw;
     height: 100vh;
-    width: 23vw;
-    background-color: #A3BAC3;
+    width: 24vw;
+    background-color: whitesmoke;
     display: flex;
     flex-direction: column;
 }
 
 .map-container #map{
     height: 100vh;
-    width: 77vw;
+    width: 76vw;
 }
 
 .left .create-room{
@@ -134,15 +109,15 @@ nav .login{
 }
 
 .btn-design{
-    padding: 0.6vw;
-    background-color: #006989;
+    padding: 0.4vw 1vw;
+    background-color: black;
+    font-size: 0.9vw;
     color: white;
     border: none;
-    border-radius: 3px;
+    border-radius: 50px;
 }
 
 .btn-design:hover{
-    background-color: #004d6b;
     cursor: pointer;
 }
 
@@ -156,6 +131,7 @@ nav .login{
     height: 5vh;
     width: 21.2vw;
     border-radius: 3px;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.3);
     border: none;
     padding-left: 1vw;
     margin-left: 1vw;
@@ -177,17 +153,20 @@ nav .login{
     width: 21.3vw;
     padding: 0.7vw;
     margin-left: 1vw;
-    border-radius: 3px;
+    border-radius: 5px;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.4);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    background-color: #006989;
-    color: white;
+    background-color: white;
+    color: black;
     margin-bottom: 1vw;
+    transition-duration: 0.5s;
 }
 
 .group:hover{
-    background-color: #004d6b;
+    background-color: black;
+    color: white;
     cursor: pointer;
 }
 
@@ -200,6 +179,17 @@ nav .login{
 .group .info{
     display: flex;
     justify-content: space-between;
+}
+
+.members{
+    font-size: 1.2vw;
+}
+
+.description{
+    width: 90%;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
 }
 
 .modal-content{
@@ -282,21 +272,68 @@ nav .login{
     cursor: pointer;
 }
 
+nav{
+    padding-top: 2vw;
+    width: 100vw;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5vw;
+}
+
+nav ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 12vw;
+}
+
+ul a{
+    text-decoration: none;
+}
+
 .profile{
     width: 100vw;
     display: flex;
-    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.profile-head{
+    width: 100vw;
+    display: flex;
     justify-content: center;
+}
+
+.profile-head h1{
+    padding-top: 2vw;
+    font-weight: 900;
+}
+
+.profile .left-side{
+    margin-left: 3vw;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    padding-top: 6vw;
+    height: 60vh;
+}
+
+.profile .right-side{
+    margin-right: 3vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 50vh;
 }
 
 .info-box{
     width: 30vw;
     height: 15vw;
     background-color: white;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.4);
     border-radius: 5px;
     display: flex;
+    margin-top: 1vw;
 }
 
 .info-box .left{
@@ -331,21 +368,21 @@ nav .login{
     justify-content: space-evenly;
     align-items: center;
     width: 20vw;
-    margin-top: 1vw;
+    margin-top: 2vw;
 }
 
 table{
     text-align: center;
     margin-top: 4vh;
-    width: 64vw;
+    width: 35vw;
     height: 10vh;
     border-collapse: collapse;
-    font-size: 1.2vw;
+    font-size: 1vw;
     font-weight: 500;
 }
 
 table thead tr{
-    background-color: #004d6b;
+    background-color: black;
     text-align: center;
     color: white;
 }
@@ -362,11 +399,12 @@ tr:nth-child(even){
     display: flex;
     margin-top: 1vw;
     justify-content: space-evenly;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.4);
     align-items: center;
     width: 30vw;
     background-color: white;
     border-radius: 5px;
-    padding: 0.3vw;
+    padding: 0.5vw;
 }
 
 .profile-group-info form{
