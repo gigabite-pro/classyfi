@@ -4,9 +4,10 @@ const {Client} = require("@googlemaps/google-maps-services-js");
 const Groups = require('../models/Groups');
 const shortid = require('shortid');
 const Users = require('../models/Users');
-const req = require('express/lib/request');
+const moment = require('moment');
 require('dotenv').config()
 
+console.log(moment().format());
 const client = new Client({});
 
 router.get('/all', isAuthorized, (req, res) => {
@@ -44,6 +45,7 @@ router.post('/create', isAuthorized, (req, res) => {
                 user.currentGroup = {
                     groupName: group.groupName,
                     groupCode: group.groupCode,
+                    joinTime: moment().format(),
                 };
                 user.status = 'admin'
                 user.save()
@@ -89,6 +91,7 @@ router.post('/join', isAuthorized, (req, res) => {
                     user.currentGroup = {
                         groupName: group.groupName,
                         groupCode: group.groupCode,
+                        joinTime: moment().format(),
                     };
                     user.status = 'member'
                     user.save()
@@ -111,6 +114,8 @@ router.post('/delete', isAuthorized, (req, res) => {
         Users.find({_id: doc.members})
         .then(users => {
             users.forEach(user => {
+                increment = (Math.floor(moment().diff(user.currentGroup.joinTime, 'minutes') / 30)) * 5;
+                user.points = user.points + increment;
                 user.currentGroup = {};
                 user.status = '';
                 user.save()
@@ -136,6 +141,8 @@ router.post('/leave', isAuthorized, (req, res) => {
         .then(() => {
             Users.findById(req.session.user._id)
             .then(user => {
+                increment = (Math.floor(moment().diff(user.currentGroup.joinTime, 'minutes') / 30)) * 5;
+                user.points = user.points + increment;
                 user.currentGroup = {};
                 user.status = '';
                 user.save()
