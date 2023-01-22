@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const session = require('express-session');
+const {isAuthorized} = require('./config/authCheck');
 const authRoute = require('./routes/auth');
 const groupsRoute = require('./routes/groups');
 const Groups = require('./models/Groups');
@@ -41,7 +42,7 @@ app.get('/', (req, res)=>{
     res.render('index');
 })
 
-app.get('/map', (req, res)=>{
+app.get('/map', isAuthorized, (req, res)=>{
     Groups.find({})
     .then((groups) => {
         res.render('map', {groups});
@@ -49,7 +50,7 @@ app.get('/map', (req, res)=>{
     .catch(err => console.log(err))
 })
 
-app.get('/profile', (req,res) =>{
+app.get('/profile', isAuthorized, (req,res) =>{
     Users.find({}).sort({points: 'desc'}).limit(50)
     .then(users => {
         Users.findById(req.session.user._id)

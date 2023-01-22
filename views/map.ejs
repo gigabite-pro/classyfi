@@ -98,6 +98,21 @@
     
     <div class="map-container">
         <div class="left">
+            <div class="small-nav">
+                <div class="buttons2">
+                    <a href="/profile">
+                        <button class="btn-design" style="margin-right: 1vw;">
+                            Profile
+                        </button>
+                    </a>
+
+                    <a href="/auth/logout">
+                        <button class="btn-design">
+                            Logout
+                        </button>
+                    </a>
+                </div>
+            </div>
             <div class="search">
                 <input type="text" id="searchbar" onkeyup="search_groups()" placeholder="Search Groups" >
             </div>
@@ -129,6 +144,9 @@
                         </div>
                         <div class="group-id" style="display: none;">
                             <%= group._id %>
+                        </div>
+                        <div class="social" style="display: none;">
+                            <%= group.social %>
                         </div>
                     </div>
                 <% }) %>
@@ -171,10 +189,11 @@
                         <h3>${group.children[0].innerText}</h3>
                         <i class="fa-solid fa-xmark close" onclick="close_info_modal()"></i>
                     </div>
-                    <p>Description: ${group.children[1].children[0].innerText}</p>
-                    <p>Exact Location: ${group.children[2].innerText}</p>
-                    <p>Members: ${group.children[1].children[1].innerText}</p>
-                    <button class="btn info-btn" onClick="getDirections(${group.children[3].children[0].innerHTML},${group.children[3].children[1].innerHTML})">Get Directions</button>`
+                    <p><strong>Description:</strong> ${group.children[1].children[0].innerText}</p>
+                    <p><strong>Exact Location:</strong> ${group.children[2].innerText}</p>
+                    <p><strong>Contact:</strong> ${group.children[5].innerText}</p>
+                    <p><strong>Members:</strong> ${group.children[1].children[1].innerText}</p>
+                    <button class="btn-design" onClick="getDirections(${group.children[3].children[0].innerHTML},${group.children[3].children[1].innerHTML})">Get Directions</button>`
                 })
             });
         }

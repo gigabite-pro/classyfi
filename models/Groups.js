@@ -9,6 +9,10 @@ const groupSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    social: {
+        type: String,
+        required: true,
+    },
     latLong : {
         type: Array,
         required: true,

@@ -48,7 +48,10 @@
                     <input type="text" class="form-control" name="groupDescription" placeholder="Room description" autocomplete="off" required>
                 </div>
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="address" placeholder="Address of the location" autocomplete="off" required>
+                    <input type="text" class="form-control" name="social" placeholder="Contact Info (e.g. linkedIn, Instagram, Phone Number)" autocomplete="off" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" id="autocomplete" class="form-control" name="address" placeholder="Address of the location" required>
                 </div>
                 <div class="mb-3">
                     <input type="text" class="form-control" name="exactLocation" placeholder="Exact Location" autocomplete="off" required>
@@ -176,6 +179,31 @@
         </div>
     </div>
     <script>
+
+        let autocomplete;
+        function initAutocomplete(){
+            autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById('autocomplete'),
+                {
+                    types: ['establishment'],
+                    componentRestrictions: {country: 'CA'},
+                    fields: ['place_id', 'geometry', 'name'],
+                }
+            );
+            
+            autocomplete.addListener('place_changed', onPlaceChanged);
+
+            function onPlaceChanged(){
+                var place = autocomplete.getPlace();
+
+                if(!place.geometry){
+                    document.getElementById('autocomplete').placeholder = 'Address of the location';
+                } else{
+                    document.getElementById('details').innerHTML = place.name;
+                }
+            }
+        }
+
         function checkGroupCode() {
             var groupCode = document.querySelector("input[name='groupCode']").value;
             fetch(`/groups/check?code=${groupCode}`, {method: "GET"})
@@ -201,6 +229,8 @@
             })
             .catch(err => console.log(err))
         }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBZQkUZ-cMj2cBEEylh3FeC_crWH_vrt8&libraries=places&callback=initAutocomplete" async defer>
     </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
      <!-- Bootstrap  -->

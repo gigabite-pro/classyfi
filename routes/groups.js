@@ -9,7 +9,7 @@ require('dotenv').config()
 
 const client = new Client({});
 
-router.get('/all', (req, res) => {
+router.get('/all', isAuthorized, (req, res) => {
     Groups.find({})
     .then((groups) => {
         res.json({groups});
@@ -17,8 +17,8 @@ router.get('/all', (req, res) => {
     .catch(err => console.log(err))
 })
 
-router.post('/create', (req, res) => {
-    const {groupName, groupDescription, address, exactLocation} = req.body;
+router.post('/create', isAuthorized, (req, res) => {
+    const {groupName, groupDescription, social, address, exactLocation} = req.body;
 
     client.geocode({
         params:{
@@ -31,6 +31,7 @@ router.post('/create', (req, res) => {
         const newGroup = new Groups({
             groupName,
             groupDescription,
+            social,
             latLong: latLng,
             exactLocation,
             members: [req.session.user._id],
@@ -56,7 +57,7 @@ router.post('/create', (req, res) => {
     }).catch(err => console.log(err))
 })
 
-router.get('/check', (req, res) => {
+router.get('/check', isAuthorized, (req, res) => {
     const code = req.query.code;
     Groups.findOne({groupCode: code})
     .then(group => {
@@ -73,7 +74,7 @@ router.get('/check', (req, res) => {
     .catch(err => console.log(err))
 })
 
-router.post('/join', (req, res) => {
+router.post('/join', isAuthorized, (req, res) => {
     const {groupCode} = req.body;
     Groups.findOne({groupCode: groupCode})
     .then((group) => {
@@ -103,7 +104,7 @@ router.post('/join', (req, res) => {
     .catch(err => console.log(err))
 })
 
-router.post('/delete', (req, res) => {
+router.post('/delete', isAuthorized, (req, res) => {
     const {groupCode} = req.body;
     Groups.findOneAndDelete({groupCode : groupCode})
     .then(doc => {
@@ -124,7 +125,7 @@ router.post('/delete', (req, res) => {
     .catch(err => console.log(err))
 })
 
-router.post('/leave', (req, res) => {
+router.post('/leave', isAuthorized, (req, res) => {
     const {groupCode} = req.body;
     Groups.findOne({groupCode: groupCode})
     .then(group => {
