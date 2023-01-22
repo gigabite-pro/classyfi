@@ -11,7 +11,7 @@ const groupSchema = new mongoose.Schema({
     latLong : {
         type: Array,
     },
-    innerLocation: {
+    exactLocation: {
         type: String,
     },
     members: {

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <!-- Maps API  -->
+    <script src="https://kit.fontawesome.com/410f94a1ed.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/style.css">
     <title>Classyfi | StudyGroups</title>
 </head>
@@ -30,10 +30,17 @@
     }
     
     function initMap(position) {
-        const currentPosition = {lat: 49.2664447, lng: -123.2521443};
+        const currentPosition = {lat: 49.262352, lng: -123.2467381};
         const map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 16,
+            zoom: 15,
             center: currentPosition,
+        });
+
+        map.addListener('click', (e) => {
+            let groups = document.querySelectorAll('.group');
+            groups.forEach((group) => {
+                group.style.display = 'block';
+            })
         });
 
         drop();
@@ -43,37 +50,53 @@
 
             for (let i = 0; i < groups.length; i++) {
                 addMarkerWithTimeout(groups[i], i * 200);
-            }}
+            }
 
             function addMarkerWithTimeout(group, timeout) {
-            window.setTimeout(() => {
-                markers.push(
-                new google.maps.Marker({
-                    position: {lat: group.latLong[0], lng: group.latLong[1]},
-                    map: map,
-                    title: group.groupName,
-                    icon: {
-                        url: '/assets/map-icon.png',
-                        scaledSize: new google.maps.Size(50, 50),              
-                    },
-                    animation: google.maps.Animation.DROP,
-                })
-            )}, timeout);
+                window.setTimeout(() => {
+                    markers.push(
+                        new google.maps.Marker({
+                            position: {lat: group.latLong[0], lng: group.latLong[1]},
+                            map: map,
+                            icon: {
+                                url: '/assets/map-icon.png',
+                                scaledSize: new google.maps.Size(50, 50),              
+                            },
+                            animation: google.maps.Animation.DROP,
+                            zIndex: 2,
+                        }).addListener("click", () => {
+                            let input = group._id
+                            let groups = document.querySelectorAll('.group');
+                                
+                            groups.forEach((group) => {
+                                if (group.children[4].innerText.includes(input)) {
+                                    group.style.display="block";
+                                }
+                                else {
+                                    group.style.display="none";                 
+                                }
+                            });
+                        })
+                )}, timeout);
             }
 
             function clearMarkers() {
                 for (let i = 0; i < markers.length; i++) {
                     markers[i].setMap(null);
                 }
-
                 markers = [];
             }
-
-
         }
+    }
     getGroups();
 </script>
 <body>
+
+    <div id="backdrop"></div>
+    <div id="info-modal">
+        
+    </div>
+
     <div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -90,10 +113,10 @@
                     <input type="text" class="form-control" name="groupDescription" placeholder="Room description" autocomplete="off">
                 </div>
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="address" placeholder="Room Address" autocomplete="off">
+                    <input type="text" class="form-control" name="address" placeholder="Address of the location" autocomplete="off">
                 </div>
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="innerLocation" placeholder="Location Inside Building" autocomplete="off">
+                    <input type="text" class="form-control" name="exactLocation" placeholder="Exact Location" autocomplete="off">
                 </div>
                 <div class="mb-3">
                     <button type="submit" class="btn">Create</button>
@@ -109,7 +132,7 @@
                 <button data-bs-toggle="modal" data-bs-target="#roomModal">Create Group</button>
             </div>
             <div class="search">
-                <input type="text" id="searchbar" placeholder="Search Groups" >
+                <input type="text" id="searchbar" onkeyup="search_groups()" placeholder="Search Groups" >
             </div>
             <div class="groups">
                 <% groups.forEach(group => { %>
@@ -117,8 +140,28 @@
                         <div class="name">
                             <%= group.groupName %>
                         </div>
-                        <div class="description">
-                            <%= group.groupDescription %>
+                        <div class="info">
+                            <div class="description">
+                                <%= group.groupDescription %>
+                            </div>
+                            <div class="members">
+                                <i class="fa-solid fa-users"></i>
+                                <%= group.members %>
+                            </div>
+                        </div>
+                        <div class="exactLocation" style="display: none;">
+                            <%= group.exactLocation %>
+                        </div>
+                        <div class="latLong" style="display: none;">
+                            <div class="lat">
+                                <%= group.latLong[0] %>
+                            </div>
+                            <div class="long">
+                                <%= group.latLong[1] %>
+                            </div>
+                        </div>
+                        <div class="group-id" style="display: none;">
+                            <%= group._id %>
                         </div>
                     </div>
                 <% }) %>
@@ -128,6 +171,62 @@
 
         </div>
     </div>
+    <script>
+        function search_groups() {
+            let input = document.getElementById('searchbar').value
+            input = input.toLowerCase();
+            let groups = document.getElementsByClassName('group');
+                
+            for (group of groups) { 
+                if (group.children[0].innerText.toLowerCase().includes(input)) {
+                    group.style.display="block";
+                }
+                else {
+                    group.style.display="none";                 
+                }
+            }
+        }
+
+        function startListening(){
+            let groups = document.querySelectorAll('.group');
+            const infoModal = document.getElementById('info-modal');
+            const backdrop = document.getElementById('backdrop');
+            groups.forEach(group => {
+                group.addEventListener('click', () => {
+                    backdrop.style.display = "block";
+                    backdrop.style.opacity = "0.5";
+                    infoModal.style.display = "block";
+                    infoModal.style.opacity = "1";
+                    
+                    console.log(group)
+                    infoModal.innerHTML = 
+                    `<div class="headers">
+                        <h3>${group.children[0].innerText}</h3>
+                        <i class="fa-solid fa-xmark close" onclick="close_info_modal()"></i>
+                    </div>
+                    <p>Description: ${group.children[1].children[0].innerText}</p>
+                    <p>Exact Location: ${group.children[2].innerText}</p>
+                    <p>Members: ${group.children[1].children[1].innerText}</p>
+                    <button class="btn info-btn" onClick="getDirections(${group.children[3].children[0].innerHTML},${group.children[3].children[1].innerHTML})">Get Directions</button>`
+                })
+            });
+        }
+
+        startListening();
+
+        function close_info_modal() {
+            const infoModal = document.getElementById('info-modal');
+            const backdrop = document.getElementById('backdrop');
+            backdrop.style.display = "none";
+            backdrop.style.opacity = "0";
+            infoModal.style.display = "none";
+            infoModal.style.opacity = "0";
+        }
+
+        function getDirections(lat, long) {
+            window.location.href = `https://www.google.com/maps?q=${lat},${long}`
+        }
+    </script>
     <!-- Bootstrap  -->
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBZQkUZ-cMj2cBEEylh3FeC_crWH_vrt8&callback=initMap&v=weekly"

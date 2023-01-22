@@ -170,10 +170,20 @@ nav .login{
     margin-bottom: 1vw;
 }
 
+.group:hover{
+    background-color: #004d6b;
+    cursor: pointer;
+}
+
 .group .name{
     font-size: 1.5vw;
     font-weight: bold;
     margin-bottom: 0.5vw;
+}
+
+.group .info{
+    display: flex;
+    justify-content: space-between;
 }
 
 .modal-content{
@@ -193,6 +203,68 @@ form .btn{
 }
 
 form .btn:hover{
+    background-color: #004d6b;
+    cursor: pointer;
+}
+
+#backdrop{
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0.6;
+    position: absolute;
+    z-index: 100;
+    display: none;
+    transition: all 0.5s;
+}
+
+#info-modal{
+    position: absolute;
+    width: 40vw;
+    z-index: 200;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #A3BAC3;
+    border: none;
+    border-radius: 3px;
+    padding: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: start;
+    display: none;
+    transition: all 0.5s;
+}
+
+#info-modal .headers{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1vw;
+}
+
+#info-modal h3{
+    font-size: 2vw;
+    font-weight: bold;
+}
+
+#info-modal .close{
+    font-size: 2vw;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.info-btn{
+    padding: 0.6vw;
+    background-color: #006989;
+    color: white;
+    border: none;
+    border-radius: 3px;
+}
+
+.info-btn:hover{
     background-color: #004d6b;
     cursor: pointer;
 }

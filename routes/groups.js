@@ -15,7 +15,7 @@ router.get('/all', (req, res) => {
 })
 
 router.post('/create', (req, res) => {
-    const {groupName, groupDescription, address, innerLocation} = req.body;
+    const {groupName, groupDescription, address, exactLocation} = req.body;
 
     client.geocode({
         params:{
@@ -29,7 +29,7 @@ router.post('/create', (req, res) => {
             groupName,
             groupDescription,
             latLong: latLng,
-            innerLocation,
+            exactLocation,
             members: 1,
         })
         newGroup.save()

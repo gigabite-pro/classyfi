@@ -47,7 +47,7 @@ router.get('/login', (req,res)=>{
 })
 
 router.get('/callback', async (req, res)=>{
-    const code = req.query.codes
+    const code = req.query.code
 
     // getting access tokens
     const {id_token, access_token} = await getTokens({
@@ -70,7 +70,7 @@ router.get('/callback', async (req, res)=>{
         if(doc){
             //login
             req.session.user = doc
-            res.redirect('/posts')
+            res.redirect('/dashboard')
         }else{
             //register
             const newUser = new Users({
