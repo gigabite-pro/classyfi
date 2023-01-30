@@ -15,6 +15,5 @@ https://user-images.githubusercontent.com/59077631/215618067-fa6a9ddc-1705-48f7-
 
 <img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/354/793/datas/original.jpg"/><br>
 <img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/354/797/datas/original.jpg"/><br>
-<img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/354/798/datas/original.jpg"/><br>
 <img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/354/794/datas/original.jpg"/><br>
 <img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/354/795/datas/original.jpg"/><br>
