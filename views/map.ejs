@@ -8,6 +8,7 @@
     <script src="https://kit.fontawesome.com/410f94a1ed.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="assets/map-icon.png" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <title>Classyfi | StudyGroups</title>
@@ -28,16 +29,24 @@
         .then(async (res) => {
             const resp = await res.json()
             groups = resp.groups;
-            navigator.geolocation.getCurrentPosition(initMap);
+            initMap();
         })
     }
     
     function initMap(position) {
-        const currentPosition = {lat: 49.262352, lng: -123.2467381};
+        if(window.innerHeight < 1000){
+            var zoom = 15;
+            var currentPosition = {lat: 49.263268, lng: -123.2531564};
+        }else{
+            var zoom = 15;
+            var currentPosition = {lat: 49.262352, lng: -123.2467381};  
+        }
+
         const map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 15,
-            center: currentPosition,
-        });
+                zoom: zoom,
+                center: currentPosition,
+            });
+        
 
         map.addListener('click', (e) => {
             let groups = document.querySelectorAll('.group');

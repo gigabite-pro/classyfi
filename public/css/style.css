@@ -74,6 +74,10 @@ a{
     margin-top: -1vw;
 }
 
+.home-btn{
+    padding: 0.4vw 1.2vw;
+}
+
 .map-container{
     display: flex;
 }
