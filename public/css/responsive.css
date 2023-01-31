@@ -164,11 +164,11 @@
 
     .buttons{
         padding-top: 1vw;
-        width: 70vw;
+        width: 80vw;
     }
 
     .buttons .btn-design{
-        font-size: 14px;
+        font-size: 13px;
         padding: 2.1vw 5vw;
     }
 
