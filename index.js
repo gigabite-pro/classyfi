@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const {isAuthorized} = require('./config/authCheck');
 const authRoute = require('./routes/auth');
 const groupsRoute = require('./routes/groups');
@@ -22,6 +23,7 @@ app.use(
         resave : false
     })
 )
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
