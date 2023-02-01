@@ -188,4 +188,11 @@
         width: 90vw;
         font-size: 14px;
     }
+
+    .leaderboard{
+        height: unset;
+        display: unset;
+        margin-top: 0vh;
+        overflow-y: unset;
+    }
 }
