@@ -34,7 +34,9 @@
         .then(async (res) => {
             const resp = await res.json()
             groups = resp.groups;
-            initMap();
+            navigator.geolocation.getCurrentPosition(initMap, () => {
+                initMap({coords: {latitude: 49.262352, longitude: -123.2467381}});
+            });
         })
     }
     
