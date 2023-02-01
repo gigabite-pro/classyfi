@@ -7,7 +7,6 @@ const Users = require('../models/Users');
 const moment = require('moment');
 require('dotenv').config()
 
-console.log(moment().format());
 const client = new Client({});
 
 router.get('/all', isAuthorized, (req, res) => {
