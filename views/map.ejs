@@ -110,7 +110,11 @@
     getGroups();
 </script>
 <body>
-
+    <div class="load" id="loader">
+        <div class="one"></div>
+        <div class="two"></div>
+        <div class="three"></div>
+      </div>
     <div id="backdrop"></div>
     <div id="info-modal"></div>
 
@@ -177,6 +181,12 @@
         </div>
     </div>
     <script>
+        window.addEventListener("load", () => {
+            const loader = document.getElementById("loader");
+            loader.style.opacity = "0";
+            loader.style.visibility = "hidden";
+        });
+        
         function search_groups() {
             let input = document.getElementById('searchbar').value
             input = input.toLowerCase();

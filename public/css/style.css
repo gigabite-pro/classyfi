@@ -30,6 +30,61 @@ body{
     border-radius: 10px;
 }
 
+/* Loader Starts  */
+.load {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition-duration: 1s;
+  }
+  
+  .load div {
+    width: 2vw;
+    height: 2vw;
+    background-color: whitesmoke;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    margin: 0 5px;
+    animation-name: up-and-down;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+  
+  .load .one {
+    animation-delay: 0.1s;
+  }
+  .load .two {
+    animation-delay: 0.2s;
+  }
+  .load .three {
+    animation-delay: 0.3s;
+  }
+  
+  @keyframes up-and-down {
+    to {
+      opacity: 0.2;
+      transform: translateY(-20px);
+      -webkit-transform: translateY(-20px);
+      -moz-transform: translateY(-20px);
+      -ms-transform: translateY(-20px);
+      -o-transform: translateY(-20px);
+    }
+  }
+
+/* Loader Ends  */
+
 a{
     width: fit-content;
 }

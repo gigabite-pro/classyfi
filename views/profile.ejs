@@ -21,7 +21,11 @@
     <title>Classyfi | Profile</title>
 </head>
 <body>
-    
+    <div class="load" id="loader">
+        <div class="one"></div>
+        <div class="two"></div>
+        <div class="three"></div>
+      </div>
     <nav>
         <ul>
             <a href="/map">
@@ -187,7 +191,11 @@
         </div>
     </div>
     <script>
-
+        window.addEventListener("load", () => {
+            const loader = document.getElementById("loader");
+            loader.style.opacity = "0";
+            loader.style.visibility = "hidden";
+        });
         let autocomplete;
         function initAutocomplete(){
             autocomplete = new google.maps.places.Autocomplete(
